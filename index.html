@@ -38,10 +38,12 @@
       
       require([
         "esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer",
-        "dojo/parser", "dojo/domReady!"
+        "dojo/parser","dojo/_base/fx", "dojo/_base/connect",
+        "dojo/dom", "dojo/domReady!"
       ], function(
         Map, InfoTemplate, FeatureLayer, 
-        parser
+        parser, baseFx, connect,
+        dom
       ) {
       	
 	    // require(["esri/map", "dojox/mobile", "dojox/mobile/parser", "esri/sniff", 
@@ -68,8 +70,28 @@
  			lods: lods
         });
        
+		var fade = function (dir, node) {
+			if (dir === 'Out') {
+				baseFx.fadeOut({
+					node : dom.byId(node),
+					duration : 500
+				}).play();
+			}
+			if (dir === 'In') {
+				baseFx.fadeIn({
+					node : dom.byId(node),
+					duration : 500
+				}).play();
+			}
+		};
+		
         map.on("load", initOperationalLayer);
-
+        map.on("layer-add", function() { 
+        	console.log("Layer added"); 
+        	fade('In', 'mapDiv');
+        });
+		
+		
         function initOperationalLayer() {
           var infoTemplate = new InfoTemplate("${cntry_name}", "Samples : ${samples}<br>Contact : ${usgs}<br>Collaborator : ${collab}<br>");
           var featureLayer = new FeatureLayer("http://ncrdspublic.er.usgs.gov/ArcGIS/rest/services/wocqi_all_wmas_lim/MapServer/0",{
@@ -78,7 +100,6 @@
             infoTemplate: infoTemplate,
             opacity: .5
           });
-          
           map.addLayer(featureLayer);
           map.infoWindow.resize(255,75);
         }

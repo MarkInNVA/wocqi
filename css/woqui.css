@@ -2,4 +2,7 @@ html, body, #mapDiv {
 	height: 100%; 
 	margin: 0; 
 	padding: 0; 
+}
+#mapDiv {
+	opacity: 0.0;
 } 
