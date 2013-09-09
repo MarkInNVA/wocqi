@@ -6,3 +6,10 @@ html, body, #mapDiv {
 #mapDiv {
 	opacity: 0.0;
 } 
+#helpButton{
+ position: absolute;
+ top: 90px;
+ left:17px;	
+ width:40px;
+ z-index: 5;
+}
